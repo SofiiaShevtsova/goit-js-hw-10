@@ -9,6 +9,8 @@ export const fetchCountries = (name) => {
     })
     .then((array) => {
       if (array.length > 10) {
+              listForCountries.innerHTML = "";
+
         Notify.info(
           "Too many matches found. Please enter a more specific name."
         );
@@ -24,7 +26,8 @@ export const fetchCountries = (name) => {
           )
           .join("");
 
-        listForCountries.insertAdjacentHTML("afterbegin", countriesHtmlCode);
+        listForCountries.innerHTML = "";
+        listForCountries.insertAdjacentHTML("afterbegin", countriesHtmlCode)
         }
         const { name, capital, population, flags: {svg}, languages } = array[0];
 
@@ -36,7 +39,8 @@ export const fetchCountries = (name) => {
       <p>Languages: ${(languages.map(lan => lan.name)).join(",")}</p>
       </div>`;
         
-               listForCountries.insertAdjacentHTML("afterbegin", myCountry);
+      listForCountries.innerHTML = "";
+      listForCountries.insertAdjacentHTML("afterbegin", myCountry)
  
     })
     .catch((error) => {
