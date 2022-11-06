@@ -1,7 +1,7 @@
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import { foundedCountries, getCountry } from "./templates";
 
-const listForCountries = document.querySelector(".country-info");
+export const listForCountries = document.querySelector(".country-info");
 
 export const fetchCountries = (name) => {
   fetch(`https://restcountries.com/v2/name/${name}?
