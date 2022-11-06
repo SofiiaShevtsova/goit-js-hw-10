@@ -20,6 +20,10 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+#search-box:focus{
+outline-color: blue;
+background-color: bisque;
+}
 
 .country {
   align-items: center;

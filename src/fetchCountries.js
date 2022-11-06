@@ -8,8 +8,7 @@ export const fetchCountries = (name) => {
     fields=name.official,capital,population,flags.svg,languages`)
     .then((responce) => {
       if (responce.status === 404) {
-        Notify.failure("Oops, there is no country with that name");
-        return;
+        throw new Error(response.status)
       }
 
       return responce.json();
@@ -32,6 +31,7 @@ export const fetchCountries = (name) => {
       }
     })
     .catch((error) => {
-      Notify.failure("Oops, something went wrong");
+        Notify.failure("Oops, there is no country with that name",
+          { position: "center-top", distance: "50px" });
     });
 };
