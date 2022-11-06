@@ -1,49 +1,37 @@
 import { Notify } from "notiflix/build/notiflix-notify-aio";
+import { foundedCountries, getCountry } from "./templates";
+
 const listForCountries = document.querySelector(".country-info");
 
 export const fetchCountries = (name) => {
   fetch(`https://restcountries.com/v2/name/${name}?
     fields=name.official,capital,population,flags.svg,languages`)
     .then((responce) => {
+      if (responce.status === 404) {
+        Notify.failure("Oops, there is no country with that name");
+        return;
+      }
+
       return responce.json();
     })
     .then((array) => {
       if (array.length > 10) {
-              listForCountries.innerHTML = "";
-
+        listForCountries.innerHTML = "";
         Notify.info(
-          "Too many matches found. Please enter a more specific name."
+          "Too many matches found. Please enter a more specific name.",
+          { position: "center-top", distance: "50px" }
         );
         return;
       }
+
       if (array.length < 10 && array.length > 1) {
-        const countriesHtmlCode = array
-          .map(
-            (elem) => `<div class="country">
-      <img class="flag" src="${elem.flags.svg}" alt+"flag"/>
-      <h2 class="name">${elem.name}</h2>
-    </div>`
-          )
-          .join("");
-
-        listForCountries.innerHTML = "";
-        listForCountries.insertAdjacentHTML("afterbegin", countriesHtmlCode)
-        }
-        const { name, capital, population, flags: {svg}, languages } = array[0];
-
-        const myCountry = `<div class="country">
-      <img class="flag" src="${svg}" alt+"flag"/>
-      <h2 class="name">${name}</h2>
-      <p>Capital:  ${capital}</p>
-      <p>Population: ${population}</p>
-      <p>Languages: ${(languages.map(lan => lan.name)).join(",")}</p>
-      </div>`;
-        
-      listForCountries.innerHTML = "";
-      listForCountries.insertAdjacentHTML("afterbegin", myCountry)
- 
+        listForCountries.innerHTML = foundedCountries(array);
+      }
+      if (array.length === 1) {
+        listForCountries.innerHTML = getCountry(array);
+      }
     })
     .catch((error) => {
-      console.log(error);
+      Notify.failure("Oops, something went wrong");
     });
 };
